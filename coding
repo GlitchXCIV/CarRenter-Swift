@@ -1,0 +1,114 @@
+import UIKit
+print("🚗 Autonoleggio 🚙\n")
+class Autonoleggio {
+    var autonoleggio: [Auto] = []
+    private var nome: String
+    private let prezzo: Int = 15
+    
+    var cpNome : String {
+        get {
+            return self.nome
+        }
+        set(name) {
+            self.nome = name
+        }
+    }
+    var cpPrezzo: Int {
+        get {
+            return self.prezzo
+        }
+    }
+    
+    init(nome: String) {
+        self.nome = nome
+    }
+    
+    func prenotazione(codice:String,giorni:Int){
+        for item in autonoleggio {
+            if codice == item.cpCodice {
+                if(item.cpPrenotata == false){
+                    print("Auto prenotata per \(giorni) giorni")
+                    print("Importo: \(cpPrezzo * giorni)€")
+                    item.cpPrenotata = true
+                    item.cpGiorni = giorni
+                }else{
+                    print("Auto già impegnata per \(item.cpGiorni) giorni.")
+                }
+                return
+            }
+        }
+        print("Codice non esistente.")
+        return
+    }
+    
+    func nuovaAuto(automobile:Auto){
+       autonoleggio.append(automobile)
+        print("Auto \(automobile.toString()) inserita con successo!")
+    }
+    func dettagliAuto(){
+        for (index,value) in autonoleggio.enumerated() {
+            print("Auto \(index) -> \(value.toString())")
+        }
+    }
+}
+
+class Auto {
+    private let codice : String
+    private var giorni : Int = 0
+    private var prenotata : Bool = false
+    
+    var cpCodice: String  {
+        get {
+            return self.codice
+            }
+    }
+    var cpGiorni: Int {
+        get {
+            return self.giorni
+        }
+        set(days) {
+            self.giorni = days
+        }
+    }
+    var cpPrenotata: Bool {
+        get {
+            return self.prenotata
+        }
+        set(booking) {
+            self.prenotata = booking
+        }
+    }
+    
+    init (codice: String) {
+        self.codice = codice
+        
+    }
+    
+    func toString()->String {
+        return "Auto \(self.cpCodice) -> \(self.cpPrenotata)"
+    }
+}
+
+var auto1: Auto = Auto.init(codice: "001")
+var auto2: Auto = Auto.init(codice: "002")
+var auto3: Auto = Auto.init(codice: "003")
+var auto4: Auto = Auto.init(codice: "004")
+var auto5: Auto = Auto.init(codice: "005")
+
+var autoGiusy:Autonoleggio = Autonoleggio.init(nome: "GiusyAutonoleggio")
+
+print("🔸 Inserimento delle auto all'autonoleggio")
+autoGiusy.nuovaAuto(automobile: auto1)
+autoGiusy.nuovaAuto(automobile: auto2)
+autoGiusy.nuovaAuto(automobile: auto3)
+autoGiusy.nuovaAuto(automobile: auto4)
+autoGiusy.nuovaAuto(automobile: auto5)
+print("\n🔸 Dettagli automobili")
+print(autoGiusy.dettagliAuto())
+print("\n🔸 Prenotazioni automobili")
+autoGiusy.prenotazione(codice: "002", giorni: 5)
+autoGiusy.prenotazione(codice: "004", giorni: 3)
+print("\n🔸 Dettagli automobili dopo prenotazioni")
+print(autoGiusy.dettagliAuto())
+print("\n🔸 Test - Prenotazione di un'auto già prenotata")
+autoGiusy.prenotazione(codice: "002", giorni: 3)
